@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>運算思維與程式設計成果發表展示系統</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #9d00ff;
+            --dark-blue: #0a0a20;
+            --cyber-black: #0a0a12;
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--cyber-black);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .cyber-gradient {
+            background: linear-gradient(135deg, var(--neon-purple) 0%, var(--neon-blue) 100%);
+        }
+        
+        .cyber-border {
+            position: relative;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            overflow: hidden;
+        }
+        
+        .cyber-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue));
+            animation: cyber-border-animation 3s linear infinite;
+        }
+        
+        @keyframes cyber-border-animation {
+            0% {
+                left: -100%;
+            }
+            50%, 100% {
+                left: 100%;
+            }
+        }
+        
+        .cyber-card {
+            background: rgba(10, 10, 32, 0.8);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+        
+        .cyber-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
+            border-color: rgba(0, 243, 255, 0.6);
+        }
+        
+        .neon-text {
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--neon-blue), 0 0 20px var(--neon-blue);
+        }
+        
+        .neon-text-pink {
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--neon-pink), 0 0 20px var(--neon-pink);
+        }
+        
+        .neon-text-purple {
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--neon-purple), 0 0 20px var(--neon-purple);
+        }
+        
+        .cyber-btn {
+            position: relative;
+            background: rgba(10, 10, 32, 0.8);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.2), transparent);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+        
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+        
+        .cyber-btn:hover {
+            box-shadow: 0 0 10px var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+        
+        .cyber-grid {
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+        }
+        
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--neon-pink);
+            animation: glitch-animation 2s infinite linear alternate-reverse;
+            clip: rect(44px, 450px, 56px, 0);
+        }
+        
+        .glitch::after {
+            left: -2px;
+            text-shadow: 2px 0 var(--neon-blue);
+            animation: glitch-animation 3s infinite linear alternate-reverse;
+            clip: rect(24px, 450px, 36px, 0);
+        }
+        
+        @keyframes glitch-animation {
+            0% {
+                clip: rect(24px, 450px, 36px, 0);
+            }
+            20% {
+                clip: rect(10px, 450px, 60px, 0);
+            }
+            40% {
+                clip: rect(43px, 450px, 74px, 0);
+            }
+            60% {
+                clip: rect(5px, 450px, 29px, 0);
+            }
+            80% {
+                clip: rect(17px, 450px, 31px, 0);
+            }
+            100% {
+                clip: rect(56px, 450px, 98px, 0);
+            }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 243, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 243, 255, 0);
+            }
+        }
+        
+        .scanner {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scanner::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(to bottom, 
+                rgba(0, 243, 255, 0) 0%,
+                rgba(0, 243, 255, 0.2) 50%,
+                rgba(0, 243, 255, 0) 100%);
+            animation: scan 4s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% {
+                top: -100%;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+        
+        .cyber-circle {
+            border-radius: 50%;
+            background: radial-gradient(circle at center, var(--dark-blue) 0%, var(--cyber-black) 70%);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5), inset 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+        
+        .matrix-bg {
+            position: relative;
+        }
+        
+        .matrix-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='rgba(0,243,255,0.1)' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            z-index: -1;
+        }
+        
+        .scrollbar-cyber::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .scrollbar-cyber::-webkit-scrollbar-track {
+            background: var(--dark-blue);
+        }
+        
+        .scrollbar-cyber::-webkit-scrollbar-thumb {
+            background: var(--neon-blue);
+            border-radius: 4px;
+        }
+        
+        .scrollbar-cyber::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-purple);
+        }
+        
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+        
+        .student-card {
+            transition: all 0.3s ease;
+        }
+        
+        .student-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .tool-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .tool-icon:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px var(--neon-blue));
+        }
+        
+        .feature-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-list li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .demo-btn {
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            border: none;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem; /* Equivalent to rounded-md */
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-btn:hover {
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.7);
+            transform: translateY(-2px);
+        }
+
+        /* Mascot specific styles */
+        #interactive-mascot-container {
+            position: relative; /* For positioning speech bubble and particles */
+        }
+        #interactive-mascot {
+            cursor: pointer;
+            transition: filter 0.3s ease, transform 0.3s ease; /* Added transform for shake */
+        }
+        .mascot-speech-bubble {
+            position: absolute;
+            bottom: 100%; /* Position above the mascot */
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px); /* Center and add some space */
+            background-color: var(--neon-blue);
+            color: var(--cyber-black);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0, 243, 255, 0.5);
+            opacity: 0;
+            pointer-events: none; /* So it doesn't interfere with clicking mascot again */
+            white-space: nowrap;
+            z-index: 10; /* Ensure bubble is above particles if any overlap */
+        }
+        .mascot-speech-bubble::after { /* Triangle */
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: var(--neon-blue) transparent transparent transparent;
+        }
+        .interaction-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            pointer-events: none;
+            /* Start particles from the center of the mascot container */
+            left: 50%; 
+            top: 50%;
+            transform: translate(-50%, -50%); /* Adjust for particle's own size */
+        }
+
+    </style>
+</head>
+<body class="scrollbar-cyber">
+    <!-- 背景粒子 -->
+    <div id="particles-js" class="fixed inset-0 z-0"></div>
+
+    <!-- 吉祥物 (Floating) -->
+    <img src="image/LiyuChill.svg" alt="LiyuChill Mascot Floating" class="fixed bottom-5 right-5 w-24 h-24 md:w-32 md:h-32 z-50 floating" style="filter: drop-shadow(0 0 10px var(--neon-blue));">
+
+
+    <!-- 導航欄 -->
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-opacity-80 bg-cyber-black border-b border-blue-500/30">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="cyber-circle h-10 w-10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <span class="text-xl font-bold text-white orbitron neon-text">運算思維與程式設計</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="text-blue-300 hover:text-blue-400 transition orbitron">關於課程</a>
+                <a href="#projects" class="text-blue-300 hover:text-blue-400 transition orbitron">專案作品</a>
+                <a href="#students" class="text-blue-300 hover:text-blue-400 transition orbitron">學生名單</a>
+                <a href="#tools" class="text-blue-300 hover:text-blue-400 transition orbitron">開發工具</a>
+                <a href="#vibe-coding" class="text-blue-300 hover:text-blue-400 transition orbitron">Vibe Coding</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-blue-300 hover:text-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+        <!-- 行動裝置選單 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-cyber-black border-t border-blue-500/30 px-4 py-2">
+            <a href="#about" class="block py-2 text-blue-300 hover:text-blue-400">關於課程</a>
+            <a href="#projects" class="block py-2 text-blue-300 hover:text-blue-400">專案作品</a>
+            <a href="#students" class="block py-2 text-blue-300 hover:text-blue-400">學生名單</a>
+            <a href="#tools" class="block py-2 text-blue-300 hover:text-blue-400">開發工具</a>
+            <a href="#vibe-coding" class="block py-2 text-blue-300 hover:text-blue-400">Vibe Coding</a>
+        </div>
+    </nav>
+
+    <!-- 頁首 -->
+    <header class="relative py-24 px-4 overflow-hidden">
+        <div class="cyber-grid absolute inset-0 z-0"></div>
+        <div class="container mx-auto text-center relative z-10">
+            <h1 class="glitch text-5xl md:text-6xl font-bold mb-6 orbitron neon-text" data-text="運算思維與程式設計">運算思維與程式設計</h1>
+            <p class="text-xl md:text-2xl mb-10 text-blue-300">成果發表展示系統</p>
+            <div class="flex justify-center">
+                <a href="#projects" class="cyber-btn px-8 py-4 rounded-md orbitron text-lg">
+                    查看專案作品
+                </a>
+            </div>
+            
+            <div class="absolute top-1/4 left-10 w-20 h-20 cyber-circle floating" style="animation-delay: 0.5s"></div>
+            <div class="absolute bottom-1/4 right-10 w-16 h-16 cyber-circle floating" style="animation-delay: 1s"></div>
+            <div class="absolute top-1/3 right-1/4 w-12 h-12 cyber-circle floating" style="animation-delay: 1.5s"></div>
+            <div class="absolute bottom-1/3 left-1/4 w-14 h-14 cyber-circle floating" style="animation-delay: 2s"></div>
+        </div>
+    </header>
+
+    <!-- 關於課程 -->
+    <section id="about" class="py-20 px-4 relative">
+        <div class="cyber-grid absolute inset-0 z-0 opacity-50"></div>
+        <div class="container mx-auto relative z-10">
+            <h2 class="text-3xl font-bold text-center mb-16 orbitron neon-text-purple">關於課程</h2>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12">
+                <!-- Interactive Mascot -->
+                <div id="interactive-mascot-container" class="flex-shrink-0 w-48 h-48 md:w-64 md:h-64">
+                    <img src="image/LiyuChill.svg" alt="Interactive LiyuChill Mascot" id="interactive-mascot" class="w-full h-full object-contain transition-all duration-300 hover:scale-105" style="filter: drop-shadow(0 0 15px var(--neon-blue));">
+                    <div id="mascot-speech-bubble" class="mascot-speech-bubble">Hello!神神噠^_^b</div>
+                </div>
+
+                <!-- Course Info Card -->
+                <div class="w-full md:w-2/3 lg:w-1/2">
+                    <div class="cyber-card p-8 rounded-lg">
+                        <h3 class="text-2xl font-semibold mb-8 text-center orbitron neon-text">課程資訊</h3>
+                        
+                        <div class="space-y-8">
+                            <div>
+                                <div class="flex items-center mb-2">
+                                    <div class="cyber-circle h-10 w-10 flex items-center justify-center mr-3 flex-shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+                                    <p class="text-xl font-medium text-blue-300 orbitron">授課老師</p>
+                                </div>
+                                <p class="text-gray-300 pl-13">邱俐瑜</p>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center mb-2">
+                                    <div class="cyber-circle h-10 w-10 flex items-center justify-center mr-3 flex-shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                        </svg>
+                                    </div>
+                                    <p class="text-xl font-medium text-blue-300 orbitron">課程內容</p>
+                                </div>
+                                <p class="text-gray-300 pl-13">本課程教授運算思維基礎概念與程式設計技巧，學生透過實作專案學習解決問題的能力。</p>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center mb-2">
+                                    <div class="cyber-circle h-10 w-10 flex items-center justify-center mr-3 flex-shrink-0">
+                                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <p class="text-xl font-medium text-blue-300 orbitron">學習成果</p>
+                                </div>
+                                <p class="text-gray-300 pl-13">學生完成八項系統開發，包含遊戲、工具與應用程式，展現程式設計與問題解決能力。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 專案作品 -->
+    <section id="projects" class="py-20 px-4 relative">
+        <div class="cyber-grid absolute inset-0 z-0 opacity-30"></div>
+        <div class="container mx-auto relative z-10">
+            <h2 class="text-3xl font-bold text-center mb-16 orbitron neon-text-pink">專案作品</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- 專案卡片 1 -->
+                <div class="project-card cyber-card rounded-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-blue-900 to-indigo-900 flex items-center justify-center scanner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16m-7 6h7" />
+                            <rect x="5" y="5" width="4" height="4" rx="1" stroke-width="1.5" />
+                            <rect x="15" y="5" width="4" height="4" rx="1" stroke-width="1.5" />
+                            <rect x="5" y="15" width="4" height="4" rx="1" stroke-width="1.5" />
+                            <rect x="15" y="15" width="4" height="4" rx="1" stroke-width="1.5" />
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-3 text-blue-300 orbitron">圈圈叉叉遊戲系統</h3>
+                        <p class="text-gray-300 text-sm mb-6">網頁介面 (九宮格、標記)、遊戲邏輯 (落子判斷、勝負判斷)、玩家切換、重新開始</p>
+                        <button class="view-project-btn cyber-btn w-full py-2 rounded-md orbitron" data-project="tic-tac-toe">查看詳情</button>
+                    </div>
+                </div>
+
+                <!-- 專案卡片 2 -->
+                <div class="project-card cyber-card rounded-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-purple-900 to-blue-900 flex items-center justify-center scanner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l2 2 4-4" />
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-3 text-purple-300 orbitron">待辦事項規劃系統</h3>
+                        <p class="text-gray-300 text-sm mb-6">新增事項、刪除事項、標記完成、顯示清單、(進階) 儲存資料</p>
+                        <button class="view-project-btn cyber-btn w-full py-2 rounded-md orbitron" data-project="todo-list" style="border-color: var(--neon-purple); color: var(--neon-purple);">查看詳情</button>
+                    </div>
+                </div>
+
+                <!-- 專案卡片 3 -->
+                <div class="project-card cyber-card rounded-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-pink-900 to-purple-900 flex items-center justify-center scanner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l-3-3m0 0l3-3m-3 3h7" />
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-3 text-pink-300 orbitron">班級社團抽籤系統</h3>
+                        <p class="text-gray-300 text-sm mb-6">名單輸入、亂數產生抽籤結果、顯示中籤者名單、(進階) 權重設定</p>
+                        <button class="view-project-btn cyber-btn w-full py-2 rounded-md orbitron" data-project="lottery" style="border-color: var(--neon-pink); color: var(--neon-pink);">查看詳情</button>
+                    </div>
+                </div>
+
+                <!-- 專案卡片 4 -->
+                <div class="project-card cyber-card rounded-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-cyan-900 to-blue-900 flex items-center justify-center scanner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-3 text-cyan-300 orbitron">留言版系統</h3>
+                        <p class="text-gray-300 text-sm mb-6">留言輸入、留言顯示、(進階) 儲存資料、(進階) 管理功能</p>
+                        <button class="view-project-btn cyber-btn w-full py-2 rounded-md orbitron" data-project="message-board" style="border-color: #22d3ee; color: #22d3ee;">查看詳情</button>
+                    </div>
+                </div>
+
+                <!-- 專案卡片 5 -->
+                <div class="project-card cyber-card rounded-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-red-900 to-pink-900 flex items-center justify-center scanner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 13a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1v-2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 21h8" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 17v4" />
+                            <circle cx="8" cy="10" r="1" />
+                            <circle cx="16" cy="10" r="1" />
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-3 text-red-300 orbitron">五子棋遊戲系統</h3>
+                        <p class="text-gray-300 text-sm mb-6">網頁介面 (棋盤格、標記)、遊戲邏輯 (落子判斷、勝負判斷)、玩家切換、重新開始</p>
+                        <button class="view-project-btn cyber-btn w-full py-2 rounded-md orbitron" data-project="gomoku" style="border-color: #f87171; color: #f87171;">查看詳情</button>
+                    </div>
+                </div>
+
+                <!-- 專案卡片 6 -->
+                <div class="project-card cyber-card rounded-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-amber-900 to-orange-900 flex items-center justify-center scanner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-3 text-amber-300 orbitron">圖片上傳與展示系統</h3>
+                        <p class="text-gray-300 text-sm mb-6">圖片上傳、圖片儲存、圖片顯示、(進階) 圖片管理</p>
+                        <button class="view-project-btn cyber-btn w-full py-2 rounded-md orbitron" data-project="image-gallery" style="border-color: #fcd34d; color: #fcd34d;">查看詳情</button>
+                    </div>
+                </div>
+
+                <!-- 專案卡片 7 -->
+                <div class="project-card cyber-card rounded-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-fuchsia-900 to-purple-900 flex items-center justify-center scanner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-fuchsia-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17h6" />
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-3 text-fuchsia-300 orbitron">迷因梗圖合成系統</h3>
+                        <p class="text-gray-300 text-sm mb-6">圖片上傳 (背景)、文字輸入、文字疊加、樣式設定、(進階) 迷因模板</p>
+                        <button class="view-project-btn cyber-btn w-full py-2 rounded-md orbitron" data-project="meme-generator" style="border-color: #e879f9; color: #e879f9;">查看詳情</button>
+                    </div>
+                </div>
+
+                <!-- 專案卡片 8 -->
+                <div class="project-card cyber-card rounded-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-teal-900 to-cyan-900 flex items-center justify-center scanner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18v-6" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 15l-3 3-3-3" />
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-3 text-teal-300 orbitron">心情日記樹洞系統</h3>
+                        <p class="text-gray-300 text-sm mb-6">日記輸入、匿名發布、留言互動、心情追蹤、(進階) 文字分析</p>
+                        <button class="view-project-btn cyber-btn w-full py-2 rounded-md orbitron" data-project="mood-diary" style="border-color: #5eead4; color: #5eead4;">查看詳情</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 學生名單 -->
+    <section id="students" class="py-20 px-4 relative">
+        <div class="cyber-grid absolute inset-0 z-0 opacity-30"></div>
+        <div class="container mx-auto relative z-10">
+            <h2 class="text-3xl font-bold text-center mb-16 orbitron neon-text">學生名單</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- 學生卡片 1 -->
+                <div class="student-card cyber-card rounded-lg p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="cyber-circle h-14 w-14 flex items-center justify-center mr-4 pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-blue-300 orbitron">呂承憲</h3>
+                            <p class="text-sm text-gray-400">201班 2號</p>
+                        </div>
+                    </div>
+                    <div class="bg-cyber-black rounded-md p-4 border border-blue-500/30">
+                        <p class="text-sm text-gray-300">本宮的網站有很多美少女戰士～呵呵～</p>
+                    </div>
+                </div>
+
+                <!-- 學生卡片 2 -->
+                <div class="student-card cyber-card rounded-lg p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="cyber-circle h-14 w-14 flex items-center justify-center mr-4 pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-blue-300 orbitron">連子棋</h3>
+                            <p class="text-sm text-gray-400">201班 5號</p>
+                        </div>
+                    </div>
+                    <div class="bg-cyber-black rounded-md p-4 border border-blue-500/30">
+                        <p class="text-sm text-gray-300">成為程式神，不再只是夢想！但我好像要失業了～</p>
+                    </div>
+                </div>
+
+                <!-- 學生卡片 3 -->
+                <div class="student-card cyber-card rounded-lg p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="cyber-circle h-14 w-14 flex items-center justify-center mr-4 pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-blue-300 orbitron">陳柏憲</h3>
+                            <p class="text-sm text-gray-400">201班 7號</p>
+                        </div>
+                    </div>
+                    <div class="bg-cyber-black rounded-md p-4 border border-blue-500/30">
+                        <p class="text-sm text-gray-300">為什麼AI不聽我的話阿？</p>
+                    </div>
+                </div>
+
+                <!-- 學生卡片 4 -->
+                <div class="student-card cyber-card rounded-lg p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="cyber-circle h-14 w-14 flex items-center justify-center mr-4 pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-blue-300 orbitron">張可薰</h3>
+                            <p class="text-sm text-gray-400">201班 19號</p>
+                        </div>
+                    </div>
+                    <div class="bg-cyber-black rounded-md p-4 border border-blue-500/30">
+                        <p class="text-sm text-gray-300">我的番茄時鐘看起來挺不賴的！</p>
+                    </div>
+                </div>
+
+                <!-- 學生卡片 5 -->
+                <div class="student-card cyber-card rounded-lg p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="cyber-circle h-14 w-14 flex items-center justify-center mr-4 pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-blue-300 orbitron">李宜宸</h3>
+                            <p class="text-sm text-gray-400">201班 23號</p>
+                        </div>
+                    </div>
+                    <div class="bg-cyber-black rounded-md p-4 border border-blue-500/30">
+                        <p class="text-sm text-gray-300">為什麼AI聽不懂我講的啊？</p>
+                    </div>
+                </div>
+
+                <!-- 學生卡片 6 -->
+                <div class="student-card cyber-card rounded-lg p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="cyber-circle h-14 w-14 flex items-center justify-center mr-4 pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-blue-300 orbitron">周唯中</h3>
+                            <p class="text-sm text-gray-400">203班 1號</p>
+                        </div>
+                    </div>
+                    <div class="bg-cyber-black rounded-md p-4 border border-blue-500/30">
+                        <p class="text-sm text-gray-300">我設計了一個可以AI算數學的系統</p>
+                    </div>
+                </div>
+
+                <!-- 學生卡片 7 -->
+                <div class="student-card cyber-card rounded-lg p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="cyber-circle h-14 w-14 flex items-center justify-center mr-4 pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-blue-300 orbitron">江層謙</h3>
+                            <p class="text-sm text-gray-400">203班 6號</p>
+                        </div>
+                    </div>
+                    <div class="bg-cyber-black rounded-md p-4 border border-blue-500/30">
+                        <p class="text-sm text-gray-300">我是誰？我在哪？</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 開發工具 -->
+    <section id="tools" class="py-20 px-4 relative">
+        <div class="cyber-grid absolute inset-0 z-0 opacity-30"></div>
+        <div class="container mx-auto relative z-10">
+            <h2 class="text-3xl font-bold text-center mb-16 orbitron neon-text-purple">開發工具</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <!-- 應用工具 -->
+                <div class="cyber-card p-8 rounded-xl">
+                    <div class="flex items-center mb-8">
+                        <div class="cyber-circle h-14 w-14 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold orbitron neon-text">應用工具</h3>
+                    </div>
+                    
+                    <div class="space-y-8">
+                        <div class="flex items-start tool-icon">
+                            <div class="cyber-circle h-12 w-12 flex items-center justify-center mr-4 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-blue-300 orbitron">Google Drive 雲端硬碟</p>
+                                <p class="text-gray-300 mt-1">主要作為檔案庫基底，用於存放Google試算表，及網站相關圖片素材。</p>
+                                <a href="https://drive.google.com/drive" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 mt-2 inline-block">https://drive.google.com/drive</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start tool-icon">
+                            <div class="cyber-circle h-12 w-12 flex items-center justify-center mr-4 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-green-300 orbitron">Google Sheet 試算表</p>
+                                <p class="text-gray-300 mt-1">主要作為資料庫基底，記錄使用者使用行為及相關數據。</p>
+                                <a href="https://docs.google.com/spreadsheets" target="_blank" class="text-sm text-green-400 hover:text-green-300 mt-2 inline-block">https://docs.google.com/spreadsheets</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start tool-icon">
+                            <div class="cyber-circle h-12 w-12 flex items-center justify-center mr-4 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-yellow-300 orbitron">Google Apps Script</p>
+                                <p class="text-gray-300 mt-1">主要作為網站開發程式碼編寫，使用JavaScript程式語言。</p>
+                                <a href="https://developers.google.com/apps-script" target="_blank" class="text-sm text-yellow-400 hover:text-yellow-300 mt-2 inline-block">https://developers.google.com/apps-script</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI 工具 -->
+                <div class="cyber-card p-8 rounded-xl">
+                    <div class="flex items-center mb-8">
+                        <div class="cyber-circle h-14 w-14 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold orbitron neon-text-pink">AI 工具</h3>
+                    </div>
+                    
+                    <div class="space-y-8">
+                        <div class="flex items-start tool-icon">
+                            <div class="cyber-circle h-12 w-12 flex items-center justify-center mr-4 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M12 16v-4"></path>
+                                    <path d="M12 8h.01"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-green-300 orbitron">ChatGPT</p>
+                                <p class="text-gray-300 mt-1">主要協助Vibe Coding生成程式碼、提供設計靈感，提高開發效率，亦可生成圖片。</p>
+                                <a href="https://chatgpt.com/" target="_blank" class="text-sm text-green-400 hover:text-green-300 mt-2 inline-block">https://chatgpt.com/</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start tool-icon">
+                            <div class="cyber-circle h-12 w-12 flex items-center justify-center mr-4 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-blue-300 orbitron">Copilot</p>
+                                <p class="text-gray-300 mt-1">主要協助Vibe Coding生成程式碼、提供設計靈感，提高開發效率，亦可生成圖片。</p>
+                                <a href="https://copilot.microsoft.com" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 mt-2 inline-block">https://copilot.microsoft.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start tool-icon">
+                            <div class="cyber-circle h-12 w-12 flex items-center justify-center mr-4 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-purple-300 orbitron">Gemini</p>
+                                <p class="text-gray-300 mt-1">主要協助Vibe Coding生成程式碼、提供設計靈感，提高開發效率，亦可生成圖片。</p>
+                                <a href="https://gemini.google.com/" target="_blank" class="text-sm text-purple-400 hover:text-purple-300 mt-2 inline-block">https://gemini.google.com/</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vibe Coding 介紹 -->
+    <section id="vibe-coding" class="py-20 px-4 relative">
+        <div class="cyber-grid absolute inset-0 z-0 opacity-30"></div>
+        <div class="container mx-auto relative z-10">
+            <h2 class="text-3xl font-bold text-center mb-16 orbitron neon-text-pink">Vibe Coding</h2>
+            <div class="cyber-card rounded-xl overflow-hidden">
+                <div class="md:flex">
+                    <div class="md:w-1/3 cyber-gradient p-8 text-white flex items-center justify-center scanner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 4l-4 4-4-4" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 20l-4-4-4 4" />
+                        </svg>
+                    </div>
+                    <div class="p-8 md:w-2/3">
+                        <h3 class="text-2xl font-semibold mb-6 orbitron neon-text-purple">關於 Vibe Coding</h3>
+                        <p class="text-gray-300 mb-6">Vibe Coding 是由 OpenAI 共同創辦人 Andrej Karpathy 在 2025 年提出的全新開發模式，透過大型語言模型（LLM）協助，讓開發者能以自然語言 prompt 描述任務，由 AI 自動生成程式碼，減少對傳統程式技能的依賴。</p>
+                        <p class="text-gray-300 mb-6">這種 AI coding 的方式鼓勵開發者專注在「問題描述」與「邏輯設計」，而非語法與細節，Karpathy 形容這是一種「順著感覺走（embracing the vibes）」的寫程式體驗，讓更多非工程背景的人也能參與軟體創作。</p>
+                        
+                        <div class="mt-8">
+                            <div class="relative">
+                                <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur opacity-25"></div>
+                                <div class="relative bg-cyber-black p-6 rounded-lg border border-blue-500/30">
+                                    <div class="flex items-center mb-4">
+                                        <div class="cyber-circle h-10 w-10 flex items-center justify-center mr-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            </svg>
+                                        </div>
+                                        <h4 class="text-lg font-medium text-blue-300 orbitron">Vibe Coding 核心理念</h4>
+                                    </div>
+                                    <p class="text-gray-300 italic">"程式設計不再是語法的掌握，而是意圖的表達。當我們能夠清晰地描述問題和解決方案，AI 就能將其轉化為可執行的程式碼。" — Andrej Karpathy</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 作品展示連結 -->
+    <section class="py-16 px-4 cyber-gradient relative">
+        <div class="absolute inset-0 bg-cyber-black opacity-20"></div>
+        <div class="container mx-auto text-center relative z-10">
+            <h2 class="text-2xl font-bold mb-6 orbitron neon-text">作品展示及繳交系統</h2>
+            <p class="mb-10 max-w-2xl mx-auto text-white">查看學生作品的完整展示及繳交系統，了解更多關於課程成果。</p>
+            <a href="https://script.google.com/macros/s/AKfycbzhQvsKVMjh_3Ypsq93D5Ua-jIWlrCf6S7QYWs4isyOfONdhGSmWHUT_RDYYos6wV8/exec" target="_blank" class="inline-block cyber-btn px-10 py-4 rounded-lg orbitron text-lg">
+                前往作品展示系統
+            </a>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer class="bg-cyber-black text-white py-12 px-4 border-t border-blue-500/30">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-8 md:mb-0">
+                    <h3 class="text-xl font-bold mb-2 orbitron neon-text">運算思維與程式設計</h3>
+                    <p class="text-blue-300">成果發表展示系統</p>
+                </div>
+                <div class="flex flex-col md:flex-row md:space-x-12 space-y-6 md:space-y-0">
+                    <div>
+                        <h4 class="font-semibold mb-3 text-blue-300 orbitron">課程資訊</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li>授課老師：邱俐瑜</li>
+                            <li>課程內容：運算思維與程式設計</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-blue-500/30 mt-10 pt-6 text-center text-gray-400 text-sm">
+                <p>Copyright © Liyuchiutiger Gongminshen</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 專案詳情模態框 -->
+    <div id="project-modal" class="fixed inset-0 bg-black bg-opacity-80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div id="modal-inner-content" class="cyber-card max-w-3xl w-full max-h-[90vh] overflow-y-auto scrollbar-cyber rounded-xl">
+            <div class="p-6 md:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="modal-title" class="text-2xl font-bold orbitron neon-text"></h3>
+                    <button id="close-modal-x" class="text-gray-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="modal-content" class="text-gray-300 space-y-4">
+                    <!-- 內容將由 JavaScript 填充 -->
+                </div>
+                <div class="mt-8 flex justify-end">
+                    <button id="close-modal-btn" class="cyber-btn px-6 py-2 rounded-md orbitron">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 粒子效果 JS -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Particles.js Main Background
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS("particles-js", {
+                    "particles": { "number": { "value": 60, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#00f3ff" }, "shape": { "type": "circle" }, "opacity": { "value": 0.4, "random": true, "anim": { "enable": true, "speed": 0.8, "opacity_min": 0.1, "sync": false } }, "size": { "value": 2.5, "random": true }, "line_linked": { "enable": true, "distance": 130, "color": "#00f3ff", "opacity": 0.3, "width": 1 }, "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false } }, "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "repulse": { "distance": 80, "duration": 0.4 }, "push": { "particles_nb": 4 } } }, "retina_detect": true
+                });
+            }
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                             mobileMenu.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+
+            // Project Modal Logic
+            const projectModal = document.getElementById('project-modal');
+            const modalInnerContent = document.getElementById('modal-inner-content');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+            const closeModalX = document.getElementById('close-modal-x');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const viewProjectBtns = document.querySelectorAll('.view-project-btn');
+
+            const projectDetails = {
+                'tic-tac-toe': {
+                    title: "圈圈叉叉遊戲系統",
+                    description: "這是一個經典的圈圈叉叉（井字遊戲）網頁應用程式。玩家可以輪流在九宮格中下棋，先將三個棋子連成一線者獲勝。",
+                    features: ["響應式網頁介面，適應不同螢幕大小", "清晰的九宮格棋盤", "玩家輪流標記（O 或 X）", "自動判斷遊戲勝負或平局", "提供重新開始遊戲功能", "簡潔直觀的使用者體驗"],
+                    demoLink: "https://script.google.com/macros/s/AKfycbwh9iJ2jZt3joKVmfbuPF5HVhhdEmG40oW_P8L0iGShPlMxTsYJP9lK0FvSfY6lw6CK-A/exec"
+                },
+                'todo-list': {
+                    title: "待辦事項規劃系統",
+                    description: "一個實用的待辦事項管理工具，幫助使用者有效地組織和追蹤任務。",
+                    features: ["新增待辦事項功能", "刪除已完成或不需要的事項", "標記事項為已完成/未完成狀態", "清晰顯示所有待辦事項列表", "(進階) 使用瀏覽器 LocalStorage 儲存資料，保留使用者紀錄", "(進階) 允許編輯現有事項"],
+                    demoLink: "https://script.google.com/macros/s/AKfycbyV64VkLt6hYdVazVpW_aY2uHg70SZIfDArpS2ugxcEuT8tM2idHyh3PSdXIcbQxapq/exec"
+                },
+                'lottery': {
+                    title: "班級社團抽籤系統",
+                    description: "一個公平、隨機的抽籤系統，適用於班級活動、社團分組等多種情境。",
+                    features: ["允許使用者輸入參與抽籤的名單", "使用亂數產生器確保抽籤結果的隨機性", "清楚顯示中籤者名單", "可設定抽取數量", "(進階) 允許為特定參與者設定權重，影響中籤機率", "(進階) 抽籤結果可匯出或儲存"],
+                    demoLink: "https://script.google.com/macros/s/AKfycbyybRHAjUO6mNGhsH_HPBdkfvONJSWBPTOryIicM6wdJ6JStKF1Ar3u1UoSJiWSbHlP2g/exec"
+                },
+                'message-board': {
+                    title: "留言版系統",
+                    description: "一個互動式的線上留言版，讓使用者可以發表意見並與他人交流。",
+                    features: ["提供留言輸入框供使用者發表內容", "按時間順序顯示所有留言", "顯示留言者名稱與留言時間", "(進階) 使用資料庫或雲端儲存服務持久化留言資料", "(進階) 管理員功能，如刪除不当留言", "(進階) 支援回覆特定留言"],
+                    demoLink: "https://script.google.com/macros/s/AKfycbwGgymY3JciIGy7Shco5I60loQ4lKyPpaen3McCecdo1jOfwiaOA3VkhnHcanU8zSrK/exec"
+                },
+                'gomoku': {
+                    title: "五子棋遊戲系統",
+                    description: "經典的五子棋對戰遊戲，玩家需設法先將五個己方棋子連成一線。",
+                    features: ["標準 15x15 或可自訂大小的棋盤格", "玩家輪流下黑白棋", "即時判斷落子是否有效", "精確的勝負判斷邏輯（五子連線）", "提供悔棋或重新開始遊戲的選項", "(進階) 人機對戰模式 (AI)"],
+                    demoLink: "https://script.google.com/macros/s/AKfycbw8uakJL3DSgnbEYrUuuo5WT2tSIECi3d5SiMQGrSO0S9PkjhmALuQaQaLU2NfN-Cj0lQ/exec"
+                },
+                'image-gallery': {
+                    title: "圖片上傳與展示系統",
+                    description: "一個允許使用者上傳圖片並以畫廊形式展示的系統。",
+                    features: ["提供圖片上傳介面，支援多種格式", "圖片儲存於伺服器或雲端空間", "以縮圖或網格方式展示圖片庫", "點擊圖片可放大預覽", "(進階) 圖片分類、標籤功能", "(進階) 使用者帳戶系統，管理個人圖片"],
+                    demoLink: "https://script.google.com/macros/s/AKfycbztdsibL3ay10jnBaGnM5BKefcT3jZnq_E6jyQd0om5A_JJ6qZ1PMPGSpHDRr1_BsFg/exec"
+                },
+                'meme-generator': {
+                    title: "迷因梗圖合成系統",
+                    description: "一個有趣的工具，讓使用者可以輕鬆製作自己的迷因梗圖。",
+                    features: ["允許上傳自訂背景圖片", "提供文字輸入框添加上下文字", "可調整文字大小、顏色、字型和位置", "即時預覽合成效果", "提供多種熱門迷因模板選擇", "(進階) 儲存或分享生成的梗圖"],
+                    demoLink: "https://script.google.com/macros/s/AKfycbwnS4z0NehIFyI_7inj07YCkw5VrjcI39032mbHU4V_c4BnTXlqYRn5HshrtLM63xkSnw/exec"
+                },
+                'mood-diary': {
+                    title: "心情日記樹洞系統",
+                    description: "一個匿名的心情分享平台，讓使用者可以安全地記錄和抒發情緒。",
+                    features: ["提供日記輸入介面，可記錄文字與選擇心情標籤", "匿名發布日記內容，保護使用者隱私", "允許其他匿名使用者對日記進行留言互動", "可依日期或心情標籤追蹤歷史紀錄", "(進階) 簡單的情緒文字分析與趨勢圖表", "(進階) 設定日記隱私等級 (公開/僅自己可見)"],
+                    demoLink: "https://script.google.com/macros/s/AKfycbzEdllChUaU2HwzSijwr9-TDVPlZYpQruh0aYYWXsEhoCgq3htwDwomrJvC6dW-JgSq/exec"
+                }
+            };
+
+            function openModal(projectKey) {
+                const details = projectDetails[projectKey];
+                if (details) {
+                    modalTitle.textContent = details.title;
+                    let contentHTML = `<p class="mb-4">${details.description}</p>`;
+                    
+                    if (details.features && details.features.length > 0) {
+                        contentHTML += '<h4 class="text-lg font-semibold orbitron text-blue-300 mb-2">主要功能：</h4>';
+                        contentHTML += '<ul class="feature-list space-y-1">';
+                        details.features.forEach(feature => {
+                            contentHTML += `<li>${feature}</li>`;
+                        });
+                        contentHTML += '</ul>';
+                    }
+                    
+                    if (details.demoLink && details.demoLink !== "#") {
+                         contentHTML += `<div class="mt-6 text-center"><a href="${details.demoLink}" target="_blank" class="demo-btn">查看線上範例</a></div>`;
+                    }
+
+                    modalContent.innerHTML = contentHTML;
+                    projectModal.classList.remove('hidden');
+                    projectModal.classList.add('flex');
+                    if (typeof gsap !== 'undefined' && gsap) {
+                        gsap.fromTo(modalInnerContent, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: 0.3 });
+                    }
+                } else {
+                    console.error('Project details not found for key:', projectKey);
+                }
+            }
+
+            function closeModal() {
+                if (typeof gsap !== 'undefined' && gsap) {
+                    gsap.to(modalInnerContent, { opacity: 0, y: -50, duration: 0.3, onComplete: () => {
+                        projectModal.classList.add('hidden');
+                        projectModal.classList.remove('flex');
+                        modalTitle.textContent = '';
+                        modalContent.innerHTML = '';
+                    }});
+                } else {
+                    projectModal.classList.add('hidden');
+                    projectModal.classList.remove('flex');
+                    modalTitle.textContent = '';
+                    modalContent.innerHTML = '';
+                }
+            }
+
+            if (viewProjectBtns.length > 0) {
+                viewProjectBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const projectKey = btn.dataset.project;
+                        console.log('View project button clicked for:', projectKey); // Diagnostic log
+                        openModal(projectKey);
+                    });
+                });
+            } else {
+                console.error("No '.view-project-btn' elements found.");
+            }
+
+
+            if(closeModalX) closeModalX.addEventListener('click', closeModal);
+            if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+
+            if(projectModal) {
+                projectModal.addEventListener('click', (event) => {
+                    if (event.target === projectModal) {
+                        closeModal();
+                    }
+                });
+            }
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && projectModal && !projectModal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+
+            // Interactive Mascot Logic
+            const interactiveMascot = document.getElementById('interactive-mascot');
+            const mascotBubble = document.getElementById('mascot-speech-bubble');
+            const mascotContainer = document.getElementById('interactive-mascot-container');
+            let isMascotAnimating = false;
+
+            // Get CSS variable values
+            const rootStyles = getComputedStyle(document.documentElement);
+            const neonBlue = rootStyles.getPropertyValue('--neon-blue').trim();
+            const neonPink = rootStyles.getPropertyValue('--neon-pink').trim();
+            const neonPurple = rootStyles.getPropertyValue('--neon-purple').trim();
+            const particleColors = [neonBlue, neonPink, neonPurple, '#00ff9d', '#ffdd00'];
+
+
+            if (interactiveMascot && mascotBubble && mascotContainer && typeof gsap !== 'undefined' && gsap) {
+                interactiveMascot.addEventListener('click', () => {
+                    console.log('Interactive mascot clicked'); // Diagnostic log
+                    if (isMascotAnimating) return;
+                    isMascotAnimating = true;
+
+                    // 1. Glow
+                    gsap.to(interactiveMascot, { 
+                        filter: `drop-shadow(0 0 25px ${neonPink})`, // Use JS variable for color
+                        duration: 0.3, 
+                        yoyo: true, 
+                        repeat: 1 
+                    });
+
+                    // 2. Shake
+                    gsap.timeline()
+                        .to(interactiveMascot, { x: -6, rotation: -4, duration: 0.06 })
+                        .to(interactiveMascot, { x: 6, rotation: 4, duration: 0.06 })
+                        .to(interactiveMascot, { x: -4, rotation: -2, duration: 0.06 })
+                        .to(interactiveMascot, { x: 4, rotation: 2, duration: 0.06 })
+                        .to(interactiveMascot, { x: 0, rotation: 0, duration: 0.06 });
+
+                    // 3. Greeting Bubble
+                    gsap.to(mascotBubble, { opacity: 1, y: -20, duration: 0.3, ease: "back.out(1.7)" });
+                    gsap.to(mascotBubble, { opacity: 0, y: 0, duration: 0.3, delay: 1.5, ease: "power1.in" });
+                    
+                    // 4. Colorful Particles
+                    for (let i = 0; i < 20; i++) { // Increased particle count
+                        const particle = document.createElement('div');
+                        particle.classList.add('interaction-particle');
+                        particle.style.backgroundColor = particleColors[Math.floor(Math.random() * particleColors.length)];
+                        
+                        mascotContainer.appendChild(particle); // Append to container for correct relative positioning
+
+                        gsap.to(particle, {
+                            x: (Math.random() - 0.5) * 250, 
+                            y: (Math.random() - 0.5) * 250, 
+                            scale: Math.random() * 0.6 + 0.4,
+                            opacity: 0,
+                            duration: Math.random() * 1 + 0.6, 
+                            ease: "power2.out",
+                            onComplete: () => {
+                                particle.remove();
+                            }
+                        });
+                    }
+                    
+                    setTimeout(() => {
+                        isMascotAnimating = false;
+                    }, 1800);
+                });
+            } else {
+                console.error('Mascot elements or GSAP not found for interactivity. Check IDs and GSAP library.');
+                if (!interactiveMascot) console.error('interactiveMascot not found');
+                if (!mascotBubble) console.error('mascotBubble not found');
+                if (!mascotContainer) console.error('mascotContainer not found');
+                if (typeof gsap === 'undefined') console.error('GSAP library not loaded.');
+            }
+        });
+    </script>
+</body>
+</html>
